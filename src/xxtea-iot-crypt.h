@@ -19,7 +19,8 @@
 // This is based on the prior work done by Alessandro Pasqualini
 // http://github.com/alessandro1105/XXTEA-Arduino
 //
-// @version API 1.0.0
+// @version API 1.1.0 - Updated the Size inputs and more standard Conversion
+//                      for buffer between the uint32_t and uint8_t types
 //
 //
 // @author boseji - salearj@hotmail.com
@@ -37,27 +38,37 @@
 #define MAX_XXTEA_KEY8   (MAX_XXTEA_KEY32 * 4)
 #define MAX_XXTEA_DATA8  (MAX_XXTEA_DATA32 * 4)
 
-#define XXTEA_STATUS_SUCCESS 			0
-#define XXTEA_STATUS_GENERAL_ERROR 		1
-#define XXTEA_STATUS_PARAMETER_ERROR 	2
-#define XXTEA_STATUS_SIZE_ERROR 		3
+#define XXTEA_STATUS_SUCCESS          0
+#define XXTEA_STATUS_GENERAL_ERROR    1
+#define XXTEA_STATUS_PARAMETER_ERROR  2
+#define XXTEA_STATUS_SIZE_ERROR       3
+#define XXTEA_STATUS_ALIGNMENT_ERROR  4
+
+// Find size of Uint32 array from an input of Byte array size
+#define UINT32CALCBYTE(X) ( ( ( X & 3 ) != 0 ) ? ((X >> 2) + 1) : (X >> 2) )
+
+// Find size of Byte array from an input of Uint32 array size
+#define BYTECALCUINT32(X) ( X << 2 )
 
 /**
  * Function to Setup the Key in order to perform
  *
- * @param key in pointer to the Array containing the Key
- * @param len in Length of the Key
+ * @param key [in] pointer to the Array containing the Key
+ * @param len [in] Length of the Key - maximum it can be 16
  *
  * @note The Key length should not exceed the @ref MAX_XXTEA_KEY32 parameter
  *
  * @return Status of operation
  *   - XXTEA_STATUS_SUCCESS for successful association
  *   - XXTEA_STATUS_PARAMETER_ERROR for error in input parameters
+ *   - XXTEA_STATUS_SIZE_ERROR in case the key is too long
+ *
+ * TODO: Add `__attribute_deprecated__` at end of the functions to be Disabled
  */
-int xxtea_setup(uint8_t *key, int32_t len);
+int xxtea_setup(uint8_t *key, size_t len);
 
-int xxtea_encrypt(uint8_t *data, int32_t len, uint8_t *buf, int32_t *maxlen);
-int xxtea_decrypt(uint8_t *data, int32_t len);
+int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen);
+int xxtea_decrypt(uint8_t *data, size_t len);
 
 class xxtea_c
 {

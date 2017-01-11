@@ -15,7 +15,8 @@
 // Library to provide the XXTEA Encryption and Decryption Facility both for
 // Raw input and Strings
 // 
-// @version API 1.0.0
+// @version API 1.1.0 - Updated the Size inputs and more standard Conversion
+//                      for buffer between the uint32_t and uint8_t types
 //
 //
 // @author boseji - salearj@hotmail.com
@@ -30,30 +31,48 @@
 static uint32_t xxtea_data[MAX_XXTEA_DATA32];
 static uint32_t xxtea_key[MAX_XXTEA_KEY32];
 
-int xxtea_setup(uint8_t *key, int32_t len)
+int xxtea_setup(uint8_t *key, size_t len)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
-  int i;
+  size_t osz;
+  
   do{
+    
+    // Parameter Check
     if(key == NULL || len <= 0 || len > MAX_XXTEA_KEY8)
     {
       ret = XXTEA_STATUS_PARAMETER_ERROR;
       break;
     }
-    // Initialize the Key
-    memset((void *)xxtea_key, 0, MAX_XXTEA_KEY8);
+    
+    osz = UINT32CALCBYTE(len);
+    
+    // Check for Size Errors
+    if(osz > MAX_XXTEA_KEY32)
+    {
+      ret = XXTEA_STATUS_SIZE_ERROR;
+      break;
+    }
+    
+    // Clear the Key
+    memset((void *)xxtea_key, 0, MAX_XXTEA_KEY8); 
+    
     // Copy the Key from Buffer
-    memcpy((void *)xxtea_key,(const void *)key,len);
+    memcpy((void *)xxtea_key, (const void *)key, len);
+    
+    // We have Success
     ret = XXTEA_STATUS_SUCCESS;
   }while(0);
+  
   return ret;
 }
 
-int xxtea_encrypt(uint8_t *data, int32_t len, uint8_t *buf, int32_t *maxlen)
+int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
   int i;
   int32_t l;
+  size_t osz;
   do{
     if(data == NULL || len <= 0 || len > MAX_XXTEA_DATA8 ||
       buf == NULL || *maxlen <= 0 || *maxlen < len)
@@ -61,30 +80,38 @@ int xxtea_encrypt(uint8_t *data, int32_t len, uint8_t *buf, int32_t *maxlen)
       ret = XXTEA_STATUS_PARAMETER_ERROR;
       break;
     }
-    // Calculate the Length neded for the 32bit Buffer
-    l = len/4;
-    if(len % 4) l++;
-    // Check if More than exptected space is needed
+    // Calculate the Length needed for the 32bit Buffer
+    l = UINT32CALCBYTE(len);
+
+    // Check if More than expected space is needed
     if(l > MAX_XXTEA_DATA32 || *maxlen < (l * 4))
     {
       ret = XXTEA_STATUS_SIZE_ERROR;
       break;
     }
-    // Initialize the Data
-    memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8);
-    memcpy((void *)xxtea_data, (const void *)data, len);
-    // Performn Encryption
+    osz = MAX_XXTEA_DATA32; // Load Max Data Len
+    
+    // Clear the Data
+    memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8); 
+    
+    // Copy the Data from Buffer
+    memcpy((void *)xxtea_data, (const void *)data, len);    
+    
+    // Perform Encryption
     dtea_fn(xxtea_data, l, (const uint32_t *)xxtea_key);
+    
     // Copy Encrypted Data back to buffer
     memcpy((void *)buf, (const void *)xxtea_data, (l*4));
-    // Asign the Length
+    
+    // Assign the Length
     *maxlen = l*4;
+    
     ret = XXTEA_STATUS_SUCCESS;
   }while(0);
   return ret;
 }
 
-int xxtea_decrypt(uint8_t *data, int32_t len)
+int xxtea_decrypt(uint8_t *data, size_t len)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
   int i;
@@ -141,10 +168,10 @@ String xxtea_c::encrypt(String data)
   // Works only if the Key in setup
   if(this->keyset && data.length() != 0)
   {
-    // If the Data withn the limits of the Engine
+    // If the Data within the limits of the Engine
     if(data.length() < MAX_XXTEA_DATA8)
     {
-      int32_t len;
+      size_t len;
       // Assign the Maximum buffer we have
       len = MAX_XXTEA_DATA8;
       // Perform Encryption
@@ -187,7 +214,7 @@ String xxtea_c::decrypt(String data)
   // Works only if the Key in setup
   if(this->keyset && data.length() != 0 && (data.length() % 4) == 0)
   {
-    // If the Data withn the limits of the Engine
+    // If the Data within the limits of the Engine
     if(data.length() < (MAX_XXTEA_DATA8 * 2))
     {
       uint32_t len,i,k;

@@ -11,7 +11,7 @@
   Copyright 2016 - Under creative commons license 3.0:
         Attribution-ShareAlike CC BY-SA
 
-  @version API 1.0.0
+  @version API 1.1.0
   @author boseji - salearj@hotmail.com
 
 */
@@ -20,50 +20,24 @@
 
 void setup() {
   Serial.begin(115200);
-}
 
-void loop() {
   Serial.println();  
 
-  String keybuf = F("Hello Password");
-  Serial.print(F(" Password : "));  
-  Serial.println(keybuf);
-  
-  // Setup the Key - Once
-  if(!xxtea.setKey(keybuf))
-  {
-    Serial.println(" Assignment Failed!");
-    return;
-  }
-  
+  // Text to Encrypt - ! Carefull no to more than 80 bytes ! - Or See `Limitations`
   String plaintext = F("Hi There we can work with this");
-  Serial.print(" Plain Text: ");
-  Serial.println(plaintext);
-  
+
+  // Set the Password
+  xxtea.setKey("Hello Password");
+
   // Perform Encryption on the Data
+  Serial.print(F(" Encrypted Data: "));
   String result = xxtea.encrypt(plaintext);
-  if(result == F("-FAIL-"))
-  {
-    Serial.println(" Encryption Failed!");
-    return;
-  }
-  else
-  {
-    Serial.print(F(" Encrypted Data: "));
-    Serial.println(result);
-  }
+  result.toLowerCase(); // (Optional)
+  Serial.println(result);
   
   // Perform Decryption
-  String result1 = xxtea.decrypt(result);
-  if(result1 == F("-FAIL-"))
-  {
-    Serial.println(" Decryption Failed!");
-    return;
-  }
-  else
-  {
-    Serial.print(F(" Decrypted Data: "));
-    Serial.println(result1);
-  }
-  delay(1000);
+  Serial.print(F(" Decrypted Data: "));
+  Serial.println(xxtea.decrypt(result));
 }
+
+void loop() {}

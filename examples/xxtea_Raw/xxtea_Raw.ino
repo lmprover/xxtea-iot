@@ -58,7 +58,9 @@ void setup() {
   }
   else
   {
-    Serial.printf(" Decrypted Data: %s\n", buffer);
+
+    Serial.print(" Decrypted Data: ");
+    Serial.println(buffer);
   }
 }
 

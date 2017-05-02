@@ -11,6 +11,9 @@ This library implements both RAW data encryption as well as string encryption an
  * Changed the size to more C like `size_t` for all RAW API.
  * Added `golang` example
 
+**Update 2 May 2017**
+
+ * Added Travis-CI
 
 == Example - Easy String based Encryption / Decryption ==
 

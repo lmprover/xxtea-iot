@@ -11,7 +11,7 @@
   Copyright 2016 - Under creative commons license 3.0:
         Attribution-ShareAlike CC BY-SA
 
-  @version API 1.1.0
+  @version API 1.2.0
   @author boseji - salearj@hotmail.com
 
 */
@@ -21,7 +21,7 @@
 void setup() {
   Serial.begin(115200);
 
-  Serial.println();  
+  Serial.println();
 
   // Text to Encrypt - ! Carefull no to more than 80 bytes ! - Or See `Limitations`
   String plaintext = F("Hi There we can work with this");
@@ -34,7 +34,7 @@ void setup() {
   String result = xxtea.encrypt(plaintext);
   result.toLowerCase(); // (Optional)
   Serial.println(result);
-  
+
   // Perform Decryption
   Serial.print(F(" Decrypted Data: "));
   Serial.println(xxtea.decrypt(result));

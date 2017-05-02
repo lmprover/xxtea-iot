@@ -3,7 +3,7 @@
 // Copyright 2016 - Under creative commons license 3.0:
 //        Attribution-ShareAlike CC BY-SA
 //
-// This software is furnished "as is", without technical support, and with no 
+// This software is furnished "as is", without technical support, and with no
 // warranty, express or implied, as to its usefulness for any purpose.
 //
 // Thread Safe: No
@@ -11,11 +11,12 @@
 //
 // @file xxtea-iot-crypt.cpp
 //
-// @brief 
+// @brief
 // Library to provide the XXTEA Encryption and Decryption Facility both for
 // Raw input and Strings
-// 
-// @version API 1.1.0 - Updated the Size inputs and more standard Conversion
+//
+// @version API 1.2.0 - Added Travis CI & Fixed redundent code
+//              1.1.0 - Updated the Size inputs and more standard Conversion
 //                      for buffer between the uint32_t and uint8_t types
 //
 //
@@ -35,35 +36,35 @@ int xxtea_setup(uint8_t *key, size_t len)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
   size_t osz;
-  
+
   do{
-    
+
     // Parameter Check
     if(key == NULL || len <= 0 || len > MAX_XXTEA_KEY8)
     {
       ret = XXTEA_STATUS_PARAMETER_ERROR;
       break;
     }
-    
+
     osz = UINT32CALCBYTE(len);
-    
+
     // Check for Size Errors
     if(osz > MAX_XXTEA_KEY32)
     {
       ret = XXTEA_STATUS_SIZE_ERROR;
       break;
     }
-    
+
     // Clear the Key
-    memset((void *)xxtea_key, 0, MAX_XXTEA_KEY8); 
-    
+    memset((void *)xxtea_key, 0, MAX_XXTEA_KEY8);
+
     // Copy the Key from Buffer
     memcpy((void *)xxtea_key, (const void *)key, len);
-    
+
     // We have Success
     ret = XXTEA_STATUS_SUCCESS;
   }while(0);
-  
+
   return ret;
 }
 
@@ -87,22 +88,22 @@ int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
       ret = XXTEA_STATUS_SIZE_ERROR;
       break;
     }
-    
+
     // Clear the Data
-    memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8); 
-    
+    memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8);
+
     // Copy the Data from Buffer
-    memcpy((void *)xxtea_data, (const void *)data, len);    
-    
+    memcpy((void *)xxtea_data, (const void *)data, len);
+
     // Perform Encryption
     dtea_fn(xxtea_data, l, (const uint32_t *)xxtea_key);
-    
+
     // Copy Encrypted Data back to buffer
     memcpy((void *)buf, (const void *)xxtea_data, (l*4));
-    
+
     // Assign the Length
     *maxlen = l*4;
-    
+
     ret = XXTEA_STATUS_SUCCESS;
   }while(0);
   return ret;
@@ -236,4 +237,3 @@ String xxtea_c::decrypt(String data)
 
 
 xxtea_c xxtea;
-

@@ -3,7 +3,7 @@
 // Copyright 2016 - Under creative commons license 3.0:
 //        Attribution-ShareAlike CC BY-SA
 //
-// This software is furnished "as is", without technical support, and with no 
+// This software is furnished "as is", without technical support, and with no
 // warranty, express or implied, as to its usefulness for any purpose.
 //
 // Thread Safe: No
@@ -11,15 +11,16 @@
 //
 // @file xxtea-iot-crypt.h
 //
-// @brief 
+// @brief
 // Library to provide the XXTEA Encryption and Decryption Facility both for
 // Raw input and Strings
-// 
+//
 // @attribution
 // This is based on the prior work done by Alessandro Pasqualini
 // http://github.com/alessandro1105/XXTEA-Arduino
 //
-// @version API 1.1.0 - Updated the Size inputs and more standard Conversion
+// @version API 1.2.0 - Added Travis CI & Fixed redundent code
+//              1.1.0 - Updated the Size inputs and more standard Conversion
 //                      for buffer between the uint32_t and uint8_t types
 //
 //
@@ -76,7 +77,7 @@ class xxtea_c
   bool keyset;
   uint8_t data[MAX_XXTEA_DATA8];
   public:
-  xxtea_c(){this->keyset = false;}  
+  xxtea_c(){this->keyset = false;}
   bool setKey(String key);
   String encrypt(String data);
   String decrypt(String data);

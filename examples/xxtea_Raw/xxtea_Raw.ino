@@ -60,7 +60,7 @@ void setup() {
   {
 
     Serial.print(" Decrypted Data: ");
-    Serial.println(buffer);
+    Serial.println((char *)buffer);
   }
 }
 

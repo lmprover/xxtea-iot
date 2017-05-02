@@ -70,9 +70,7 @@ int xxtea_setup(uint8_t *key, size_t len)
 int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
-  int i;
   int32_t l;
-  size_t osz;
   do{
     if(data == NULL || len <= 0 || len > MAX_XXTEA_DATA8 ||
       buf == NULL || *maxlen <= 0 || *maxlen < len)
@@ -89,7 +87,6 @@ int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
       ret = XXTEA_STATUS_SIZE_ERROR;
       break;
     }
-    osz = MAX_XXTEA_DATA32; // Load Max Data Len
     
     // Clear the Data
     memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8); 
@@ -114,7 +111,6 @@ int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
 int xxtea_decrypt(uint8_t *data, size_t len)
 {
   int ret = XXTEA_STATUS_GENERAL_ERROR;
-  int i;
   int32_t l;
   do {
     if(data == NULL || len <= 0 || (len%4) != 0)
@@ -179,7 +175,7 @@ String xxtea_c::encrypt(String data)
         this->data,&len) == XXTEA_STATUS_SUCCESS)
       {
         String result;
-        int i;
+        size_t i;
         result.reserve(len*2 + 1);
         result = "";
         for(i=0;i<len;i++)

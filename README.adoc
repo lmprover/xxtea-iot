@@ -15,6 +15,19 @@ This library implements both RAW data encryption as well as string encryption an
 
  * Added Travis-CI
 
+**Update 08 May 2017**
+ 
+ * *WARNING Do not use outdated implementation* https://www.tools4noobs.com/online_tools/xxtea_encrypt/ to evaluate this Library
+   
+   This online implementation is for an older version of XXTEA with bugs as per
+   https://en.wikipedia.org/wiki/XXTEA
+   
+   The `xxtea-iot-crypt` uses the latest version updated by *Needham and Wheeler*
+   as in https://en.wikipedia.org/wiki/XXTEA
+   
+   Please use the `golang` version listed below instead
+  
+
 == Example - Easy String based Encryption / Decryption ==
 
 ```arduino

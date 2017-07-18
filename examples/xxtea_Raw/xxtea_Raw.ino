@@ -11,7 +11,7 @@
   Copyright 2016 - Under creative commons license 3.0:
         Attribution-ShareAlike CC BY-SA
 
-  @version API 1.2.0
+  @version API 1.2.1
   @author boseji - salearj@hotmail.com
 
 */
@@ -28,37 +28,28 @@ void setup() {
   size_t len = 200, i;
 
   // Setup the Key - Once
-  if(xxtea_setup(keybuf, strlen((char *)keybuf)) != XXTEA_STATUS_SUCCESS)
-  {
+  if(xxtea_setup(keybuf, strlen((char *)keybuf)) != XXTEA_STATUS_SUCCESS) {
     Serial.println(" Assignment Failed!");
     return;
   }
 
   // Perform Encryption on the Data
   len = 200;  // - Initialize the Maximum buffer length
-  if(xxtea_encrypt(plaintext, strlen((char*)plaintext), buffer, &len) !=
-    XXTEA_STATUS_SUCCESS)
-  {
+  if(xxtea_encrypt(plaintext, strlen((char*)plaintext), buffer, &len) != XXTEA_STATUS_SUCCESS) {
     Serial.println(" Encryption Failed!");
     return;
-  }
-  else
-  {
+  } else {
     Serial.println(" Encrypted Data: ");
     for(i = 0;i<len;i++)
-      Serial.println(buffer[i], HEX);
+      Serial.print(buffer[i], HEX);
     Serial.println();
   }
 
   // Perform Decryption
-  if(xxtea_decrypt(buffer, len) != XXTEA_STATUS_SUCCESS)
-  {
+  if(xxtea_decrypt(buffer, len) != XXTEA_STATUS_SUCCESS) {
     Serial.println(" Decryption Failed!");
     return;
-  }
-  else
-  {
-
+  } else {
     Serial.print(" Decrypted Data: ");
     Serial.println((char *)buffer);
   }

@@ -1,10 +1,15 @@
-= xxtea-iot-crypt library for Arduino =
+# xxtea-iot-crypt library for Arduino #
 
 image:https://travis-ci.org/boseji/xxtea-iot-crypt.svg?branch=master["Build Status", link="https://travis-ci.org/boseji/xxtea-iot-crypt"]
 
-== Encryption Library for IoT devices ==
+## Encryption Library for IoT devices ##
 
 This library implements both RAW data encryption as well as string encryption and decryption for XXTEA.
+
+**Updates 18 July 2017**
+
+ * Fixed issue reported for Signed arithmetic in Arduino Mega ADK board
+ * Changed Doc format to Markdown
 
 **Updates 11 Jan 2017**
 
@@ -28,7 +33,7 @@ This library implements both RAW data encryption as well as string encryption an
    Please use the `golang` version listed below instead
   
 
-== Example - Easy String based Encryption / Decryption ==
+## Example - Easy String based Encryption / Decryption ##
 
 ```arduino
 #include <xxtea-iot-crypt.h>
@@ -59,7 +64,7 @@ void loop() {}
 ```
 
 
-== Example - RAW Encryption / Decryption ==
+## Example - RAW Encryption / Decryption ##
 
 ```arduino
 #include <xxtea-iot-crypt.h>
@@ -112,7 +117,7 @@ void loop() {}
 ```
 
 
-=== Limitations ===
+### Limitations ###
 
  * At a time only 80bytes max can be encrypted due to Buffer limitations
  * Modification needed increase the 80byte at `xxtea_iot_crypt.h` file at
@@ -121,7 +126,7 @@ void loop() {}
     to accommodate.
 
 
-=== Dependencies ===
+### Dependencies ###
 
  Thread Safe: No
  Extendable: Yes
@@ -130,7 +135,7 @@ For more information about this library please visit us at
 http://github.com/boseji/xxtea-iot-crypt
 
 
-=== Verification ===
+### Verification ###
 
 We are using the `golang` for verification using the library
 https://github.com/hillu/go-xxtea
@@ -195,6 +200,6 @@ func main() {
 ```
 
 
-== License ==
+## License ##
 
 Released Under creative commons license 3.0: Attribution-ShareAlike CC BY-SA

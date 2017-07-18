@@ -15,7 +15,8 @@
 // Library to provide the XXTEA Encryption and Decryption Facility both for
 // Raw input and Strings
 //
-// @version API 1.2.0 - Added Travis CI & Fixed redundent code
+// @version API 1.2.1 - Fixed the Signed Arithmetic Problem
+//              1.2.0 - Added Travis CI & Fixed redundent code
 //              1.1.0 - Updated the Size inputs and more standard Conversion
 //                      for buffer between the uint32_t and uint8_t types
 //
@@ -95,8 +96,8 @@ int xxtea_encrypt(uint8_t *data, size_t len, uint8_t *buf, size_t *maxlen)
     // Copy the Data from Buffer
     memcpy((void *)xxtea_data, (const void *)data, len);
 
-    // Perform Encryption
-    dtea_fn(xxtea_data, l, (const uint32_t *)xxtea_key);
+    // Perform Encryption - Change for Unsigned Handling while using memory Pointer (18th July 2017)
+    dtea_fn1(xxtea_data, l, (const uint32_t *)xxtea_key);
 
     // Copy Encrypted Data back to buffer
     memcpy((void *)buf, (const void *)xxtea_data, (l*4));
@@ -128,9 +129,9 @@ int xxtea_decrypt(uint8_t *data, size_t len)
     memset((void *)xxtea_data, 0, MAX_XXTEA_DATA8);
     memcpy((void *)xxtea_data, (const void *)data, len);
     // Get the Actual Size in 32bits - Negative for Decryption
-    l = -(len / 4);
-    // Performn Decryption
-    dtea_fn(xxtea_data, l, (const uint32_t *)xxtea_key);
+    l = -((int32_t)len / 4); // - Change for Using correct Signed arithmetic (18th July 2017)
+    // Performn Decryption - Change for Unsigned Handling while using memory Pointer (18th July 2017)
+    dtea_fn1(xxtea_data, l, (const uint32_t *)xxtea_key);
     // Copy Encrypted Data back to buffer
     memcpy((void *)data, (const void *)xxtea_data, len);
     ret = XXTEA_STATUS_SUCCESS;

@@ -1,6 +1,6 @@
 # xxtea-iot-crypt library for Arduino #
 
-image:https://travis-ci.org/boseji/xxtea-iot-crypt.svg?branch=master["Build Status", link="https://travis-ci.org/boseji/xxtea-iot-crypt"]
+[![Build Status](https://travis-ci.org/boseji/xxtea-iot-crypt.svg?branch=master)]("https://travis-ci.org/boseji/xxtea-iot-crypt")
 
 ## Encryption Library for IoT devices ##
 

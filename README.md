@@ -6,6 +6,10 @@
 
 This library implements both RAW data encryption as well as string encryption and decryption for XXTEA.
 
+**Updates 20 October 2018**
+
+ * toHex function now accesseble from main sketch
+
 **Updates 18 July 2017**
 
  * Fixed issue reported for Signed arithmetic in Arduino Mega ADK board

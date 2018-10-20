@@ -236,5 +236,19 @@ String xxtea_c::decrypt(String data)
   return String("-FAIL-");
 }
 
+String xxtea_c::toHex(uint8_t *data)
+{
+    // Assign the Maximum buffer we have
+    size_t len;
+    len = sizeof(data) * 8;
+    size_t i;
+    String result;
+    for(i=0;i<len;i++)
+    {
+        result+=tohex((data[i] >> 4) & 0x0F);
+        result+=tohex(data[i] & 0x0F);
+    }
+    return result;
+}
 
 xxtea_c xxtea;

@@ -81,6 +81,7 @@ class xxtea_c
   bool setKey(String key);
   String encrypt(String data);
   String decrypt(String data);
+  String toHex(uint8_t *data);
 };
 
 extern xxtea_c xxtea;

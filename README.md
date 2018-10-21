@@ -8,7 +8,7 @@ This library implements both RAW data encryption as well as string encryption an
 
 **Updates 20 October 2018**
 
- * toHex function now accesseble from the a main sketch
+ * toHex function now accesseble from a main sketch
 
 **Updates 18 July 2017**
 

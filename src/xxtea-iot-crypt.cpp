@@ -176,16 +176,9 @@ String xxtea_c::encrypt(String data)
       if(xxtea_encrypt((uint8_t *)data.c_str(),data.length(),
         this->data,&len) == XXTEA_STATUS_SUCCESS)
       {
-        String result;
-        size_t i;
-        result.reserve(len*2 + 1);
-        result = "";
-        for(i=0;i<len;i++)
-        {
-          result+=tohex((this->data[i] >> 4) & 0x0F);
-          result+=tohex(this->data[i] & 0x0F);
-        }
-        return result;
+          String result;
+          result = xxtea.toHex((this->data), len);
+          return result;
       }
     }
   }
@@ -236,13 +229,12 @@ String xxtea_c::decrypt(String data)
   return String("-FAIL-");
 }
 
-String xxtea_c::toHex(uint8_t *data)
+String xxtea_c::toHex(uint8_t *data, size_t len)
 {
-    // Assign the Maximum buffer we have
-    size_t len;
-    len = sizeof(data) * 8;
-    size_t i;
     String result;
+    size_t i;
+    result.reserve(len*2 + 1);
+    result = "";
     for(i=0;i<len;i++)
     {
         result+=tohex((data[i] >> 4) & 0x0F);
